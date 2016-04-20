@@ -1,0 +1,8 @@
+<h1>Liste des recettes</h1>
+<% @recipes.each_with_index do |recipe, index| %>
+<ul>
+<form action='/recipes/delete' method='post'><li><button action="submit" type="submit" style="padding:0px 2px 0px 2px; margin-right:2px; margin-bottom: 2px; cursor:pointer">X</button><%= index + 1 %><input type="hidden" name="recipe_id" value="<%= index + 1 %>"> - <strong><%= recipe.name %></strong>: <%= recipe.description %></li></form>
+</ul>
+<% end %>
+<br>
+<a href="/">Retour à la page d'accueil</a>

@@ -1,0 +1,28 @@
+<% require 'json'
+recipes_in_json = { recipe: [] }
+@recipes_from_marmiton.each_with_index do |r, index|
+recipes_in_json[:recipe] <<
+{  name: r.name,
+   description: r.description,
+   preparation_time: r.preparation_time,
+   cooking_time: r.cooking_time,
+   number_of_votes: r.number_of_votes
+  }
+end
+
+final_json = File.open("recipes.json", 'w') do |file|
+  file.write(JSON.generate(recipes_in_json))
+end
+%>
+
+<% @recipes_from_marmiton.each_with_index do |r, index| %>
+<%="#{index + 1}"%> - <strong>Name :</strong><%= " #{r.name}" %><br>
+<% end %>
+
+<form action='/marmiton/done' method='post' style="margin-top:5px" style="display:none">
+<textarea type="hidden" name="add_marmiton" style="display:none" value=<%= final_json %>>
+<button method="post" style="background-color:green;">Ajouter à mes recettes</button>
+</form>
+
+<br>
+<a href='/'>Retour à la page d'accueil</a>

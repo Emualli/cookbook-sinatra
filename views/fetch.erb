@@ -1,28 +1,13 @@
-<% require 'json'
-recipes_in_json = { recipe: [] }
-@recipes_from_marmiton.each_with_index do |r, index|
-recipes_in_json[:recipe] <<
-{  name: r.name,
-   description: r.description,
-   preparation_time: r.preparation_time,
-   cooking_time: r.cooking_time,
-   number_of_votes: r.number_of_votes
-  }
-end
-
-final_json = File.open("recipes.json", 'w') do |file|
-  file.write(JSON.generate(recipes_in_json))
-end
-%>
+<h1>Liste des recettes</h1>
 
 <% @recipes_from_marmiton.each_with_index do |r, index| %>
-<%="#{index + 1}"%> - <strong>Name :</strong><%= " #{r.name}" %><br>
+<%="#{index + 1}"%> - <strong><%= " #{r.name}" %></strong><span style="display:inline-block; margin: 0px 5px;"><img src="http://images.marmitoncdn.org/skins/1/globalsearch/images/time_icon.png" style="height:15px" /><%= "#{r.preparation_time} min"%></span><span style="display:inline-block; margin: 0px 5px;"><img src="http://images.marmitoncdn.org/skins/1/globalsearch/images/cooking_time_icon.png" style="height:15px"/><%= " #{r.cooking_time} min"%></span>
+
+<form action="/marmiton/add-recipe" method="post" style="display:inline-block; float:right;">
+  <input name="link" type="hidden" value=<%="#{r.link}"%>></input>
+  <button type="submit" style="display:inline-block; float:right; font-size: 11px">Add recipe to my cookbook</button>
+</form><br>
+<p style="background-color:#eeeeee;  padding: 5px 5px;"><%= "#{r.description_long}" %></p>
 <% end %>
-
-<form action='/marmiton/done' method='post' style="margin-top:5px" style="display:none">
-<textarea type="hidden" name="add_marmiton" style="display:none" value=<%= final_json %>>
-<button method="post" style="background-color:green;">Ajouter à mes recettes</button>
-</form>
-
 <br>
-<a href='/'>Retour à la page d'accueil</a>
+<a href='/' style="float:right">Retour à la page d'accueil</a>

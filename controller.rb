@@ -71,6 +71,9 @@ class Controller
     html_doc.search('.m_texte_resultat').each do |d|
       descriptions << d.text[0...150] + '...'
     end
+    html_doc.search('.m_texte_resultat').each do |d|
+      descriptions_long << d.text + '...'
+    end
     html_doc.search('.m_prep_time').each do |preparation_time|
       preparation_times << preparation_time.next.to_s.gsub(/(\s|\smin)/, '').to_i
     end
@@ -95,7 +98,7 @@ class Controller
     end
     recipes_from_marmiton = []
     for i in (0..names.length)
-      recipes_from_marmiton << Recipe.new(name: names[i], description: descriptions[i], preparation_time: preparation_times[i], cooking_time: cooking_times_array[i], number_of_votes: votes[i], note: notes[i])
+      recipes_from_marmiton << Recipe.new(name: names[i], description: descriptions[i], description_long: descriptions_long[i], preparation_time: preparation_times[i], cooking_time: cooking_times_array[i], number_of_votes: votes[i], note: notes[i])
     end
     @view.display_recipes(recipes_from_marmiton)
     re = @view.wanna_add_to_cookbook?
